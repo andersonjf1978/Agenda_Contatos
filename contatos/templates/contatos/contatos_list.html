@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+  <h1>Contatos</h1>
+  <hr>
+  <div class="h-100 p-5 bg-light border rounded-3">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+      {% for contato in contatos %}
+        <div class="col">
+          <div class="card">
+            {% if contato.avatar %}
+              <img style="height:200px" src="{{ contato.avatar.url }}" class="card-img-top img-thumbnail" alt="...">
+            {% else %}
+              <img style="height:200px" src="{% static 'fotos/bonequinho.png' %}" class="card-img-top img-thumbnail" alt="...">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ contato.nome }}</h5>
+              <p>
+                {% for grupo in contato.grupos.all %}
+                  {{ grupo.nome }}
+                {% endfor %}
+              </p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><h6 class="card-title">Telefones:</h6></li>
+              {% for tel in contato.telefone_set.all %}
+                <li class="list-group-item">Telefone {{ forloop.counter }}: {{ tel.numero }}</li>
+              {% endfor %}
+            </ul>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><h6 class="card-title">Emails:</h6></li>
+              {% for email in contato.email_set.all %}
+                <li class="list-group-item">Email {{ forloop.counter }}: {{ email.endereco }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% empty %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
